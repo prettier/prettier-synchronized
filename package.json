@@ -38,7 +38,8 @@
     "lint:prettier": "prettier . --check",
     "prepare": "husky install",
     "test": "node --test",
-    "test-coverage": "c8 node --test"
+    "test-coverage": "c8 node --test",
+    "release": "run-s lint test dist"
   },
   "devDependencies": {
     "@fisker/eslint-config": "10.1.5",
