@@ -55,7 +55,7 @@
     "prettier": "3.0.0-alpha.0",
     "sort-package-json": "1.57.0"
   },
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@3.2.2",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
