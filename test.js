@@ -18,7 +18,7 @@ test('format', async () => {
   } catch (formatError) {
     error = formatError
   }
-  assert.equal(error.loc, {start: {line: 1, column: 4}})
+  assert.deepEqual(error.loc, {start: {line: 1, column: 4}})
 })
 
 test('version', () => {
