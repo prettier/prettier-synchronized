@@ -1,0 +1,33 @@
+# ignore file for `prettier`
+#
+# update: wget -O .prettierignore https://git.io/fjVj5
+# document: https://prettier.io/docs/en/ignore.html#ignoring-files
+#
+
+# also prettier dot files
+!.*
+
+# vendors
+**/node_modules/**
+**/vendors/**
+**/vendor/**
+**/third-party/**
+
+# build file
+**/dist/**
+**/*.min.*
+
+# fixtures
+**/fixtures/**
+
+# test
+.nyc_output/**
+coverage/**
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# yarn
+.yarn
+
+# project glob

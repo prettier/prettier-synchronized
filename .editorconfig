@@ -1,0 +1,42 @@
+# config file for `editorconfig`
+#
+# update: wget -O .editorconfig https://git.io/fjVjz
+# document: https://editorconfig.org
+#
+
+# top-most EditorConfig file
+root = true
+
+# all files
+[*]
+
+# Set default charset
+charset = utf-8
+
+# Unix-style newlines
+end_of_line = lf
+
+# with a newline ending every file
+insert_final_newline = true
+
+# 2 space indentation
+indent_style = space
+indent_size = 2
+
+# remove any whitespace characters preceding newline characters
+trim_trailing_whitespace = true
+
+# overrides
+
+# python overrides
+[*.py]
+indent_size = 4
+
+# cmd overrides
+[*.{bat,cmd}]
+charset = ansi
+end_of_line = crlf
+
+# markdown
+[*.{md,markdown}]
+insert_final_newline = false
