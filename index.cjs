@@ -1,8 +1,4 @@
-const {
-  Worker,
-  receiveMessageOnPort,
-  MessageChannel,
-} = require('node:worker_threads')
+const {Worker, receiveMessageOnPort, MessageChannel} = require('worker_threads')
 
 const PRETTIER_ASYNC_FUNCTIONS = [
   'formatWithCursor',
