@@ -19,7 +19,7 @@
   "exports": "./index.cjs",
   "files": [
     "index.cjs",
-    "worker.mjs"
+    "worker.js"
   ],
   "scripts": {
     "clean": "run-p \"clean:*\"",
