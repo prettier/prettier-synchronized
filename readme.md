@@ -16,8 +16,6 @@
 
 > Synchronous version of Prettier
 
-
-
 ## Install
 
 ```sh
@@ -29,6 +27,6 @@ yarn add prettier-sync
 ```js
 import prettierSync from 'prettier-sync'
 
-prettierSync.format('foo( )', {parser:'babel'})
+prettierSync.format('foo( )', {parser: 'babel'})
 // => 'foo();\n'
 ```
