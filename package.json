@@ -57,5 +57,5 @@
   },
   "repository": "fisker/prettier-sync",
   "funding": "https://github.com/fisker/prettier-sync?sponsor=1",
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.2"
 }
