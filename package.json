@@ -1,6 +1,6 @@
 {
   "name": "prettier-sync",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Synchronous version of Prettier",
   "homepage": "https://github.com/fisker/prettier-sync#readme",
   "bugs": {
