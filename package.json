@@ -22,21 +22,9 @@
     "worker.js"
   ],
   "scripts": {
-    "clean": "run-p \"clean:*\"",
-    "clean:dist": "del-cli dist",
-    "dist": "run-p \"dist:*\"",
-    "dist:npm": "np --yolo --no-yarn",
-    "format": "run-p \"format:*\"",
-    "//format:eslint": "yarn lint:eslint --fix",
-    "format:markdown": "markdownlint-cli2-fix",
-    "format:package-json": "sort-package-json \"package.json\" \"packages/*/package.json\"",
-    "format:prettier": "yarn lint:prettier --write",
-    "lint": "run-p \"lint:*\"",
-    "//lint:eslint": "eslint \"**/*.{js,jsx,mjs,cjs,vue}\"",
-    "lint:markdown": "markdownlint-cli2",
-    "lint:package-json": "yarn run format:package-json --check",
-    "lint:prettier": "prettier . --check",
-    "prepare": "husky install",
+    "dist": "np --yolo --no-yarn",
+    "format": "prettier . --write",
+    "lint": "prettier . --check",
     "test": "node --test",
     "test-coverage": "c8 node --test",
     "release": "run-s lint test dist"
@@ -48,19 +36,9 @@
     ]
   },
   "devDependencies": {
-    "@fisker/eslint-config": "10.1.5",
-    "@fisker/lint-staged-config": "3.1.5",
-    "@fisker/markdownlint-cli2-config": "0.0.3",
-    "@fisker/prettier-config": "5.0.6",
     "c8": "7.12.0",
-    "del-cli": "5.0.0",
-    "eslint": "8.22.0",
-    "husky": "8.0.1",
-    "lint-staged": "13.0.3",
-    "markdownlint-cli2": "0.5.1",
     "npm-run-all": "4.1.5",
-    "prettier": "3.0.0-alpha.0",
-    "sort-package-json": "1.57.0"
+    "prettier": "3.0.0-alpha.0"
   },
   "packageManager": "yarn@3.2.2",
   "publishConfig": {
