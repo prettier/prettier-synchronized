@@ -28,6 +28,7 @@ function createWorker() {
 }
 
 function createSyncFunction(functionName) {
+  console.log("createSyncFunction");
   return (...args) => {
     const signal = new Int32Array(new SharedArrayBuffer(4));
     const subChannel = new MessageChannel();
@@ -52,7 +53,14 @@ function createSyncFunction(functionName) {
 }
 
 function createDescriptor(getter) {
-  return { get: getter, enumerable: true };
+  let value;
+  return {
+    get: () => {
+      value ??= getter();
+      return value;
+    },
+    enumerable: true,
+  };
 }
 
 const prettier = Object.defineProperties(
