@@ -30,7 +30,6 @@ function createWorker() {
 }
 
 function createSyncFunction(functionName) {
-  console.log("createSyncFunction");
   return (...args) => {
     const signal = new Int32Array(new SharedArrayBuffer(4));
     const subChannel = new MessageChannel();
