@@ -32,18 +32,18 @@ function createWorker() {
 function createSyncFunction(functionName) {
   return (...args) => {
     const signal = new Int32Array(new SharedArrayBuffer(4));
-    const subChannel = new MessageChannel();
+    const { port1: localPort, port2: workerPort } = new MessageChannel();
     const worker = createWorker();
 
-    worker.postMessage({ signal, port: subChannel.port1, functionName, args }, [
-      subChannel.port1,
+    worker.postMessage({ signal, port: workerPort, functionName, args }, [
+      workerPort,
     ]);
 
     Atomics.wait(signal, 0, 0);
 
-    const { result, error, errorData } = receiveMessageOnPort(
-      subChannel.port2,
-    ).message;
+    const {
+      message: { result, error, errorData },
+    } = receiveMessageOnPort(localPort);
 
     if (error) {
       throw Object.assign(error, errorData);
