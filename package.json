@@ -2,12 +2,12 @@
   "name": "@prettier/sync",
   "version": "0.0.3",
   "description": "Synchronous version of Prettier",
-  "homepage": "https://github.com/prettier/sync#readme",
+  "homepage": "https://github.com/prettier/prettier-synchronized#readme",
   "bugs": {
-    "url": "https://github.com/prettier/sync/issues"
+    "url": "https://github.com/prettier/prettier-synchronized/issues"
   },
-  "repository": "prettier/sync",
-  "funding": "https://github.com/prettier/sync?sponsor=1",
+  "repository": "prettier/prettier-synchronized",
+  "funding": "https://github.com/prettier/prettier-synchronized?sponsor=1",
   "license": "MIT",
   "author": {
     "name": "fisker Cheung",
