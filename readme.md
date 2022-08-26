@@ -16,10 +16,10 @@
 
 > Synchronous version of Prettier
 
-## Install
+## Installation
 
 ```sh
-yarn add @prettier/sync
+yarn add prettier @prettier/sync
 ```
 
 ## Usage
