@@ -1,13 +1,27 @@
 import { parentPort } from "worker_threads";
-import * as prettier from "prettier";
+import { pathToFileURL } from "url";
+import { isAbsolute } from "path";
+
+async function callPrettierFunction({ functionName, args, prettierEntry }) {
+  const prettierEntryUrl =
+    isAbsolute(prettierEntry) || prettierEntry.startsWith(".")
+      ? pathToFileURL(prettierEntry)
+      : prettierEntry;
+  const prettier = await import(prettierEntryUrl);
+  return prettier[functionName](...args);
+}
 
 parentPort.addListener(
   "message",
-  async ({ signal, port, functionName, args }) => {
+  async ({ signal, port, functionName, args, prettierEntry }) => {
     const response = {};
 
     try {
-      response.result = await prettier[functionName](...args);
+      response.result = await callPrettierFunction({
+        functionName,
+        args,
+        prettierEntry,
+      });
     } catch (error) {
       response.error = error;
       response.errorData = { ...error };
