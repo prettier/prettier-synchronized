@@ -22,7 +22,7 @@ const PRETTIER_STATIC_PROPERTIES = ["version", "util", "doc"];
 let worker;
 function createWorker() {
   if (!worker) {
-    worker = new Worker("./worker.js");
+    worker = new Worker(require.resolve("./worker.js"));
     worker.unref();
   }
 
