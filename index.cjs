@@ -5,6 +5,8 @@ const {
   receiveMessageOnPort,
   MessageChannel,
 } = require("worker_threads");
+const url = require("url");
+const path = require("path");
 
 const PRETTIER_ASYNC_FUNCTIONS = [
   "formatWithCursor",
@@ -54,6 +56,10 @@ function createSyncFunction(functionName, prettierEntry) {
   };
 }
 
+function getProperty(property, prettierEntry) {
+  return require(prettierEntry)[property];
+}
+
 function createDescriptor(getter) {
   let value;
   return {
@@ -65,18 +71,41 @@ function createDescriptor(getter) {
   };
 }
 
+function toImportId(entry) {
+  if (entry instanceof URL) {
+    return entry.href;
+  }
+
+  if (typeof entry === "string" && path.isAbsolute(entry)) {
+    return url.pathToFileURL(entry).href;
+  }
+
+  return entry;
+}
+
+function toRequireId(entry) {
+  if (entry instanceof URL || entry.startsWith("file:")) {
+    return url.fileURLToPath(entry);
+  }
+
+  return entry;
+}
+
 function createSynchronizedPrettier({ prettierEntry }) {
+  const importId = toImportId(prettierEntry);
+  const requireId = toRequireId(prettierEntry);
+
   const prettier = Object.defineProperties(
     Object.create(null),
     Object.fromEntries(
       [
         ...PRETTIER_ASYNC_FUNCTIONS.map((functionName) => [
           functionName,
-          () => createSyncFunction(functionName, prettierEntry),
+          () => createSyncFunction(functionName, importId),
         ]),
         ...PRETTIER_STATIC_PROPERTIES.map((property) => [
           property,
-          () => require(prettierEntry)[property],
+          () => getProperty(property, requireId),
         ]),
       ].map(([property, getter]) => [property, createDescriptor(getter)]),
     ),

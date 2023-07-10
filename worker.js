@@ -1,13 +1,7 @@
 import { parentPort } from "worker_threads";
-import { pathToFileURL } from "url";
-import { isAbsolute } from "path";
 
 async function callPrettierFunction({ functionName, args, prettierEntry }) {
-  const prettierEntryUrl =
-    isAbsolute(prettierEntry) || prettierEntry.startsWith(".")
-      ? pathToFileURL(prettierEntry)
-      : prettierEntry;
-  const prettier = await import(prettierEntryUrl);
+  const prettier = await import(prettierEntry);
   return prettier[functionName](...args);
 }
 

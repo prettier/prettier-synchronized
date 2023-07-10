@@ -39,9 +39,9 @@ Type: `object`
 
 ##### `prettierEntry`
 
-Type: `string`
+Type: `string | URL`
 
-Path to prettier entry.
+Path or URL to prettier entry.
 
 ```js
 import { createSynchronizedPrettier } from "@prettier/sync";

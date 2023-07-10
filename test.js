@@ -26,15 +26,23 @@ test("version", () => {
   assert.equal(prettierSync.version, prettier.version);
 });
 
-test("createSynchronizedPrettier", async () => {
-  const prettierUrl = new URL("./a-fake-prettier-to-test.cjs", import.meta.url);
-  const fakePrettier = await import(prettierUrl);
-  const fakePrettierSync = createSynchronizedPrettier({
-    prettierEntry: fileURLToPath(prettierUrl),
-  });
-  assert.equal(fakePrettierSync.version, fakePrettier.version);
-  assert.equal(
-    fakePrettierSync.format("code"),
-    await fakePrettier.format("code"),
-  );
-});
+{
+  const fakePrettierRelatedPath = "./a-fake-prettier-to-test.cjs";
+  const fakePrettierUrl = new URL(fakePrettierRelatedPath, import.meta.url);
+  const fakePrettier = await import(fakePrettierRelatedPath);
+  for (const prettierEntry of [
+    fakePrettierRelatedPath,
+    fakePrettierUrl,
+    fakePrettierUrl.href,
+    fileURLToPath(fakePrettierUrl),
+  ]) {
+    test(prettierEntry, async () => {
+      const fakePrettierSync = createSynchronizedPrettier({ prettierEntry });
+      assert.equal(fakePrettierSync.version, fakePrettier.version);
+      assert.equal(
+        fakePrettierSync.format("code"),
+        await fakePrettier.format("code"),
+      );
+    });
+  }
+}
