@@ -26,19 +26,23 @@ test("version", () => {
   assert.equal(prettierSync.version, prettier.version);
 });
 
-test("createSynchronizedPrettier", async () => {
-  const fakePrettier = await import("./a-fake-prettier-to-test.cjs");
+{
+  const fakePrettierRelatedPath = "./a-fake-prettier-to-test.cjs";
+  const fakePrettierUrl = new URL(fakePrettierRelatedPath, import.meta.url);
+  const fakePrettier = await import(fakePrettierRelatedPath);
   for (const prettierEntry of [
-    new URL("./a-fake-prettier-to-test.cjs", import.meta.url),
-    new URL("./a-fake-prettier-to-test.cjs", import.meta.url).href,
-    "./a-fake-prettier-to-test.cjs",
-    fileURLToPath(new URL("./a-fake-prettier-to-test.cjs", import.meta.url)),
+    fakePrettierRelatedPath,
+    fakePrettierUrl,
+    fakePrettierUrl.href,
+    fileURLToPath(fakePrettierUrl),
   ]) {
-    const fakePrettierSync = createSynchronizedPrettier({ prettierEntry });
-    assert.equal(fakePrettierSync.version, fakePrettier.version);
-    assert.equal(
-      fakePrettierSync.format("code"),
-      await fakePrettier.format("code"),
-    );
+    test(prettierEntry, async () => {
+      const fakePrettierSync = createSynchronizedPrettier({ prettierEntry });
+      assert.equal(fakePrettierSync.version, fakePrettier.version);
+      assert.equal(
+        fakePrettierSync.format("code"),
+        await fakePrettier.format("code"),
+      );
+    });
   }
-});
+}

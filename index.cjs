@@ -84,7 +84,7 @@ function toImportId(entry) {
 }
 
 function toRequireId(entry) {
-  if (url instanceof URL || url.startsWith("file:")) {
+  if (entry instanceof URL || entry.startsWith("file:")) {
     return url.fileURLToPath(entry);
   }
 
