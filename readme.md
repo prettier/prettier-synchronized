@@ -47,7 +47,7 @@ Path to prettier entry.
 import { createSynchronizedPrettier } from "@prettier/sync";
 
 const prettierSync = createSynchronizedPrettier({
-  prettierPath: "/path/to/prettier/index.mjs",
+  prettierPath: "/path/to/prettier/index.js",
 });
 
 prettierSync.format("foo( )", { parser: "babel" });
