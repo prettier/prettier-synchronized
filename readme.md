@@ -37,7 +37,7 @@ prettierSync.format("foo( )", { parser: "babel" });
 
 Type: `object`
 
-##### `prettierPath`
+##### `prettierEntry`
 
 Type: `string`
 
@@ -47,7 +47,7 @@ Path to prettier entry.
 import { createSynchronizedPrettier } from "@prettier/sync";
 
 const prettierSync = createSynchronizedPrettier({
-  prettierPath: "/path/to/prettier/index.mjs",
+  prettierEntry: "/path/to/prettier/index.js",
 });
 
 prettierSync.format("foo( )", { parser: "babel" });

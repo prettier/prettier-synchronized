@@ -30,7 +30,7 @@ test("createSynchronizedPrettier", async () => {
   const prettierUrl = new URL("./a-fake-prettier-to-test.cjs", import.meta.url);
   const fakePrettier = await import(prettierUrl);
   const fakePrettierSync = createSynchronizedPrettier({
-    prettierPath: fileURLToPath(prettierUrl),
+    prettierEntry: fileURLToPath(prettierUrl),
   });
   assert.equal(fakePrettierSync.version, fakePrettier.version);
   assert.equal(

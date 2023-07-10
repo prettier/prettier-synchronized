@@ -29,14 +29,14 @@ function createWorker() {
   return worker;
 }
 
-function createSyncFunction(functionName, prettierPath) {
+function createSyncFunction(functionName, prettierEntry) {
   return (...args) => {
     const signal = new Int32Array(new SharedArrayBuffer(4));
     const { port1: localPort, port2: workerPort } = new MessageChannel();
     const worker = createWorker();
 
     worker.postMessage(
-      { signal, port: workerPort, functionName, args, prettierPath },
+      { signal, port: workerPort, functionName, args, prettierEntry },
       [workerPort],
     );
 
@@ -65,18 +65,18 @@ function createDescriptor(getter) {
   };
 }
 
-function createSynchronizedPrettier({ prettierPath }) {
+function createSynchronizedPrettier({ prettierEntry }) {
   const prettier = Object.defineProperties(
     Object.create(null),
     Object.fromEntries(
       [
         ...PRETTIER_ASYNC_FUNCTIONS.map((functionName) => [
           functionName,
-          () => createSyncFunction(functionName, prettierPath),
+          () => createSyncFunction(functionName, prettierEntry),
         ]),
         ...PRETTIER_STATIC_PROPERTIES.map((property) => [
           property,
-          () => require(prettierPath)[property],
+          () => require(prettierEntry)[property],
         ]),
       ].map(([property, getter]) => [property, createDescriptor(getter)]),
     ),
@@ -85,5 +85,5 @@ function createSynchronizedPrettier({ prettierPath }) {
   return prettier;
 }
 
-module.exports = createSynchronizedPrettier({ prettierPath: "prettier" });
+module.exports = createSynchronizedPrettier({ prettierEntry: "prettier" });
 module.exports.createSynchronizedPrettier = createSynchronizedPrettier;
