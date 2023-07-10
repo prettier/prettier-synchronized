@@ -29,15 +29,16 @@ function createWorker() {
   return worker;
 }
 
-function createSyncFunction(functionName) {
+function createSyncFunction(functionName, prettierPath) {
   return (...args) => {
     const signal = new Int32Array(new SharedArrayBuffer(4));
     const { port1: localPort, port2: workerPort } = new MessageChannel();
     const worker = createWorker();
 
-    worker.postMessage({ signal, port: workerPort, functionName, args }, [
-      workerPort,
-    ]);
+    worker.postMessage(
+      { signal, port: workerPort, functionName, args, prettierPath },
+      [workerPort],
+    );
 
     Atomics.wait(signal, 0, 0);
 
@@ -64,20 +65,25 @@ function createDescriptor(getter) {
   };
 }
 
-const prettier = Object.defineProperties(
-  Object.create(null),
-  Object.fromEntries(
-    [
-      ...PRETTIER_ASYNC_FUNCTIONS.map((functionName) => [
-        functionName,
-        () => createSyncFunction(functionName),
-      ]),
-      ...PRETTIER_STATIC_PROPERTIES.map((property) => [
-        property,
-        () => require("prettier")[property],
-      ]),
-    ].map(([property, getter]) => [property, createDescriptor(getter)]),
-  ),
-);
+function createSynchronizedPrettier({ prettierPath }) {
+  const prettier = Object.defineProperties(
+    Object.create(null),
+    Object.fromEntries(
+      [
+        ...PRETTIER_ASYNC_FUNCTIONS.map((functionName) => [
+          functionName,
+          () => createSyncFunction(functionName, prettierPath),
+        ]),
+        ...PRETTIER_STATIC_PROPERTIES.map((property) => [
+          property,
+          () => require(prettierPath)[property],
+        ]),
+      ].map(([property, getter]) => [property, createDescriptor(getter)]),
+    ),
+  );
 
-module.exports = prettier;
+  return prettier;
+}
+
+module.exports = createSynchronizedPrettier({ prettierPath: "prettier" });
+module.exports.createSynchronizedPrettier = createSynchronizedPrettier;

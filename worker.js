@@ -1,13 +1,22 @@
 import { parentPort } from "worker_threads";
-import * as prettier from "prettier";
+import { pathToFileURL } from "url";
+
+async function callPrettierFunction({ functionName, args, prettierPath }) {
+  const prettier = await import(pathToFileURL(prettierPath));
+  return prettier[functionName](...args);
+}
 
 parentPort.addListener(
   "message",
-  async ({ signal, port, functionName, args }) => {
+  async ({ signal, port, functionName, args, prettierPath }) => {
     const response = {};
 
     try {
-      response.result = await prettier[functionName](...args);
+      response.result = await callPrettierFunction({
+        functionName,
+        args,
+        prettierPath,
+      });
     } catch (error) {
       response.error = error;
       response.errorData = { ...error };
