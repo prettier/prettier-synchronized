@@ -5,6 +5,8 @@ const {
   receiveMessageOnPort,
   MessageChannel,
 } = require("worker_threads");
+const url = require("url");
+const path = require("path");
 
 const PRETTIER_ASYNC_FUNCTIONS = [
   "formatWithCursor",
@@ -69,18 +71,41 @@ function createDescriptor(getter) {
   };
 }
 
+function toImportId(entry) {
+  if (entry instanceof URL) {
+    return entry.href;
+  }
+
+  if (typeof entry === "string" && path.isAbsolute(entry)) {
+    return url.pathToFileURL(entry).href;
+  }
+
+  return entry;
+}
+
+function toRequireId(entry) {
+  if (url instanceof URL || url.startsWith("file:")) {
+    return url.fileURLToPath(entry);
+  }
+
+  return entry;
+}
+
 function createSynchronizedPrettier({ prettierEntry }) {
+  const importId = toImportId(prettierEntry);
+  const requireId = toRequireId(prettierEntry);
+
   const prettier = Object.defineProperties(
     Object.create(null),
     Object.fromEntries(
       [
         ...PRETTIER_ASYNC_FUNCTIONS.map((functionName) => [
           functionName,
-          () => createSyncFunction(functionName, prettierEntry),
+          () => createSyncFunction(functionName, importId),
         ]),
         ...PRETTIER_STATIC_PROPERTIES.map((property) => [
           property,
-          () => getProperty(property, prettierEntry),
+          () => getProperty(property, requireId),
         ]),
       ].map(([property, getter]) => [property, createDescriptor(getter)]),
     ),
