@@ -16,7 +16,13 @@
   },
   "sideEffects": false,
   "type": "module",
-  "exports": "./index.cjs",
+  "exports": {
+    ".": {
+      "require": "./index.cjs",
+      "default": "./index.cjs"
+    },
+    "./*": "./*"
+  },
   "files": [
     "index.cjs",
     "worker.js"
