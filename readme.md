@@ -30,3 +30,26 @@ import prettierSync from "@prettier/sync";
 prettierSync.format("foo( )", { parser: "babel" });
 // => 'foo();\n'
 ```
+
+### `createSynchronizedPrettier(options)`
+
+#### `options`
+
+Type: `object`
+
+##### `prettierPath`
+
+Type: `string`
+
+Path to prettier entry.
+
+```js
+import { createSynchronizedPrettier } from "@prettier/sync";
+
+const prettierSync = createSynchronizedPrettier({
+  prettierPath: "/path/to/prettier/index.mjs",
+});
+
+prettierSync.format("foo( )", { parser: "babel" });
+// => 'foo();\n'
+```
