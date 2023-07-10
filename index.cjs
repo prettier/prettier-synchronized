@@ -54,6 +54,10 @@ function createSyncFunction(functionName, prettierEntry) {
   };
 }
 
+function getProperty(property, prettierEntry) {
+  return require(prettierEntry)[property];
+}
+
 function createDescriptor(getter) {
   let value;
   return {
@@ -76,7 +80,7 @@ function createSynchronizedPrettier({ prettierEntry }) {
         ]),
         ...PRETTIER_STATIC_PROPERTIES.map((property) => [
           property,
-          () => require(prettierEntry)[property],
+          () => getProperty(property, prettierEntry),
         ]),
       ].map(([property, getter]) => [property, createDescriptor(getter)]),
     ),

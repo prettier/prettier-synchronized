@@ -39,7 +39,7 @@ Type: `object`
 
 ##### `prettierEntry`
 
-Type: `string`
+Type: `string | URL`
 
 Path to prettier entry.
 
