@@ -86,7 +86,7 @@ declare namespace prettierSync {
 
 declare const prettierSync: prettierSync.PrettierSync & {
   createSynchronizedPrettier: (
-    options: CreateSynchronizedPrettierOptions,
+    options: prettierSync.CreateSynchronizedPrettierOptions,
   ) => prettierSync.PrettierSync;
 };
 
