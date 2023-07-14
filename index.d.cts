@@ -6,33 +6,33 @@ import {
   Options,
   ResolveConfigOptions,
   doc,
-  util
-} from 'prettier'
+  util,
+} from "prettier";
 
 declare namespace prettierSync {
   interface PrettierSync {
-    doc: typeof doc
+    doc: typeof doc;
 
-    util: typeof util
+    util: typeof util;
 
-    version: string
+    version: string;
 
     /**
      * `check` checks to see if the file has been formatted with Prettier given those options and returns a `Boolean`.
      * This is similar to the `--list-different` parameter in the CLI and is useful for running Prettier in CI scenarios.
      */
-    check: (source: string, options?: Options | undefined) => boolean
+    check: (source: string, options?: Options | undefined) => boolean;
 
     /**
      * As you repeatedly call `resolveConfig`, the file system structure will be cached for performance. This function will clear the cache.
      * Generally this is only needed for editor integrations that know that the file system has changed since the last format took place.
      */
-    clearConfigCache: () => void
+    clearConfigCache: () => void;
 
     /**
      * `format` is used to format text using Prettier. [Options](https://prettier.io/docs/en/options.html) may be provided to override the defaults.
      */
-    format: (source: string, options?: Options) => string
+    format: (source: string, options?: Options) => string;
 
     /**
      * `formatWithCursor` both formats the code, and translates a cursor position from unformatted code to formatted code.
@@ -40,9 +40,12 @@ declare namespace prettierSync {
      *
      * The `cursorOffset` option should be provided, to specify where the cursor is. This option cannot be used with `rangeStart` and `rangeEnd`.
      */
-    formatWithCursor: (source: string, options: CursorOptions) => CursorResult
+    formatWithCursor: (source: string, options: CursorOptions) => CursorResult;
 
-    getFileInfo: (filePath: string, options?: FileInfoOptions) => FileInfoResult
+    getFileInfo: (
+      filePath: string,
+      options?: FileInfoOptions,
+    ) => FileInfoResult;
 
     /**
      * `resolveConfig` can be used to resolve configuration for a given source file,
@@ -57,7 +60,10 @@ declare namespace prettierSync {
      *
      * The promise will be rejected if there was an error parsing the configuration file.
      */
-    resolveConfig: (filePath: string, options?: ResolveConfigOptions) => Options | null
+    resolveConfig: (
+      filePath: string,
+      options?: ResolveConfigOptions,
+    ) => Options | null;
 
     /**
      * `resolveConfigFile` can be used to find the path of the Prettier configuration file,
@@ -70,19 +76,21 @@ declare namespace prettierSync {
      *
      * The promise will be rejected if there was an error parsing the configuration file.
      */
-    resolveConfigFile: (filePath?: string) => string | null
+    resolveConfigFile: (filePath?: string) => string | null;
   }
 
   interface CreateSynchronizedPrettierOptions {
     /**
      * Path or URL to prettier entry.
      */
-    prettierEntry: string | URL
+    prettierEntry: string | URL;
   }
 }
 
 declare const prettierSync: prettierSync.PrettierSync & {
-  createSynchronizedPrettier: (options: CreateSynchronizedPrettierOptions) => prettierSync.PrettierSync
-}
+  createSynchronizedPrettier: (
+    options: CreateSynchronizedPrettierOptions,
+  ) => prettierSync.PrettierSync;
+};
 
-export = prettierSync
+export = prettierSync;
