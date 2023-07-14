@@ -19,6 +19,7 @@
   "exports": "./index.cjs",
   "files": [
     "index.cjs",
+    "index.d.cts",
     "worker.js"
   ],
   "scripts": {
