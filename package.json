@@ -20,7 +20,6 @@
   "exports": {
     ".": {
       "types": "./index.d.cts",
-      "require": "./index.cjs",
       "default": "./index.cjs"
     },
     "./*": "./*"
