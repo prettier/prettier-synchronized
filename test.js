@@ -37,7 +37,9 @@ test("version", () => {
     fileURLToPath(fakePrettierUrl),
   ]) {
     test(prettierEntry, async () => {
-      const fakeSynchronizedPrettier = createSynchronizedPrettier({ prettierEntry });
+      const fakeSynchronizedPrettier = createSynchronizedPrettier({
+        prettierEntry,
+      });
       assert.equal(fakeSynchronizedPrettier.version, fakePrettier.version);
       assert.equal(
         fakeSynchronizedPrettier.format("code"),

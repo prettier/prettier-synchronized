@@ -8,7 +8,6 @@ const {
 const url = require("url");
 const path = require("path");
 
-
 /**
 @template {keyof PrettierSynchronizedFunctions} FunctionName
 @typedef {(...args: Parameters<Prettier[FunctionName]>) => Awaited<ReturnType<Prettier[FunctionName]>> } PrettierSyncFunction
