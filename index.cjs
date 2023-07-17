@@ -8,6 +8,19 @@ const {
 const url = require("url");
 const path = require("path");
 
+
+/**
+@template {keyof PrettierSynchronizedFunctions} FunctionName
+@typedef {(...args: Parameters<Prettier[FunctionName]>) => Awaited<ReturnType<Prettier[FunctionName]>> } PrettierSyncFunction
+*/
+
+/**
+@typedef {import("prettier")} Prettier
+@typedef {{ [FunctionName in typeof PRETTIER_ASYNC_FUNCTIONS[number]]: PrettierSyncFunction<FunctionName> }} PrettierSynchronizedFunctions
+@typedef {{ [PropertyName in typeof PRETTIER_STATIC_PROPERTIES[number]]: Prettier[PropertyName] }} PrettierStaticProperties
+@typedef {PrettierSynchronizedFunctions & PrettierStaticProperties} SynchronizedPrettier
+*/
+
 const PRETTIER_ASYNC_FUNCTIONS = /** @type {const} */ ([
   "formatWithCursor",
   "format",
@@ -37,12 +50,12 @@ function createWorker() {
 }
 
 /**
- * @template {keyof PrettierSyncFunctions} FunctionName
+ * @template {keyof PrettierSynchronizedFunctions} FunctionName
  * @param {FunctionName} functionName
  * @param {string} prettierEntry
  * @returns {PrettierSyncFunction<FunctionName>}
  */
-function createSyncFunction(functionName, prettierEntry) {
+function createSynchronizedFunction(functionName, prettierEntry) {
   return (...args) => {
     const signal = new Int32Array(new SharedArrayBuffer(4));
     const { port1: localPort, port2: workerPort } = new MessageChannel();
@@ -133,7 +146,7 @@ function createSynchronizedPrettier({ prettierEntry }) {
         ...PRETTIER_ASYNC_FUNCTIONS.map((functionName) => {
           return /** @type {const} */ ([
             functionName,
-            () => createSyncFunction(functionName, importId),
+            () => createSynchronizedFunction(functionName, importId),
           ]);
         }),
         ...PRETTIER_STATIC_PROPERTIES.map((property) => {
@@ -154,15 +167,3 @@ function createSynchronizedPrettier({ prettierEntry }) {
 module.exports = createSynchronizedPrettier({ prettierEntry: "prettier" });
 // @ts-expect-error Property 'createSynchronizedPrettier' for named export compatibility
 module.exports.createSynchronizedPrettier = createSynchronizedPrettier;
-
-/**
- * @typedef {import('prettier')} Prettier
- * @typedef {PrettierSyncFunctions & PrettierStaticProperties} SynchronizedPrettier
- * @typedef {{ [FunctionName in typeof PRETTIER_ASYNC_FUNCTIONS[number]]: PrettierSyncFunction<FunctionName> }} PrettierSyncFunctions
- * @typedef {{ [PropertyName in typeof PRETTIER_STATIC_PROPERTIES[number]]: Prettier[PropertyName] }} PrettierStaticProperties
- */
-
-/**
- * @template {keyof PrettierSyncFunctions} FunctionName
- * @typedef {(...args: Parameters<Prettier[FunctionName]>) => Awaited<ReturnType<Prettier[FunctionName]>> } PrettierSyncFunction
- */

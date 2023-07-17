@@ -25,9 +25,9 @@ yarn add prettier @prettier/sync
 ## Usage
 
 ```js
-import prettierSync from "@prettier/sync";
+import synchronizedPrettier from "@prettier/sync";
 
-prettierSync.format("foo( )", { parser: "babel" });
+synchronizedPrettier.format("foo( )", { parser: "babel" });
 // => 'foo();\n'
 ```
 
@@ -46,10 +46,10 @@ Path or URL to prettier entry.
 ```js
 import { createSynchronizedPrettier } from "@prettier/sync";
 
-const prettierSync = createSynchronizedPrettier({
+const synchronizedPrettier = createSynchronizedPrettier({
   prettierEntry: "/path/to/prettier/index.js",
 });
 
-prettierSync.format("foo( )", { parser: "babel" });
+synchronizedPrettier.format("foo( )", { parser: "babel" });
 // => 'foo();\n'
 ```

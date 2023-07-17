@@ -7,17 +7,17 @@ type SynchronizedPrettier = {
   doc: Prettier["doc"];
 
   // Prettier functions
-  formatWithCursor: PrettierSyncFunction<"formatWithCursor">;
-  format: PrettierSyncFunction<"format">;
-  check: PrettierSyncFunction<"check">;
-  resolveConfig: PrettierSyncFunction<"resolveConfig">;
-  resolveConfigFile: PrettierSyncFunction<"resolveConfigFile">;
-  clearConfigCache: PrettierSyncFunction<"clearConfigCache">;
-  getFileInfo: PrettierSyncFunction<"getFileInfo">;
-  getSupportInfo: PrettierSyncFunction<"getSupportInfo">;
+  formatWithCursor: PrettierSynchronizedFunction<"formatWithCursor">;
+  format: PrettierSynchronizedFunction<"format">;
+  check: PrettierSynchronizedFunction<"check">;
+  resolveConfig: PrettierSynchronizedFunction<"resolveConfig">;
+  resolveConfigFile: PrettierSynchronizedFunction<"resolveConfigFile">;
+  clearConfigCache: PrettierSynchronizedFunction<"clearConfigCache">;
+  getFileInfo: PrettierSynchronizedFunction<"getFileInfo">;
+  getSupportInfo: PrettierSynchronizedFunction<"getSupportInfo">;
 };
 
-type PrettierSyncFunction<
+type PrettierSynchronizedFunction<
   FunctionName extends
     | "formatWithCursor"
     | "format"
@@ -31,10 +31,10 @@ type PrettierSyncFunction<
   ...args: Parameters<Prettier[FunctionName]>
 ) => Awaited<ReturnType<Prettier[FunctionName]>>;
 
-declare const prettierSync: SynchronizedPrettier & {
+declare const synchronizedPrettier: SynchronizedPrettier & {
   createSynchronizedPrettier: (options: {
     prettierEntry: string | URL;
   }) => SynchronizedPrettier;
 };
 
-export = prettierSync;
+export = synchronizedPrettier;
