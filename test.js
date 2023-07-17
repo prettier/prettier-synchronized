@@ -3,19 +3,19 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import prettier from "prettier";
-import prettierSync, { createSynchronizedPrettier } from "./index.cjs";
+import synchronizedPrettier, { createSynchronizedPrettier } from "./index.cjs";
 
 test("format", async () => {
   const code = await fs.readFile("./index.cjs", "utf8");
   const formatOptions = { parser: "meriyah" };
   assert.equal(
-    prettierSync.format(code, formatOptions),
+    synchronizedPrettier.format(code, formatOptions),
     await prettier.format(code, formatOptions),
   );
 
   let error;
   try {
-    prettierSync.format("foo(", formatOptions);
+    synchronizedPrettier.format("foo(", formatOptions);
   } catch (formatError) {
     error = formatError;
   }
@@ -23,7 +23,7 @@ test("format", async () => {
 });
 
 test("version", () => {
-  assert.equal(prettierSync.version, prettier.version);
+  assert.equal(synchronizedPrettier.version, prettier.version);
 });
 
 {
@@ -37,10 +37,12 @@ test("version", () => {
     fileURLToPath(fakePrettierUrl),
   ]) {
     test(prettierEntry, async () => {
-      const fakePrettierSync = createSynchronizedPrettier({ prettierEntry });
-      assert.equal(fakePrettierSync.version, fakePrettier.version);
+      const fakeSynchronizedPrettier = createSynchronizedPrettier({
+        prettierEntry,
+      });
+      assert.equal(fakeSynchronizedPrettier.version, fakePrettier.version);
       assert.equal(
-        fakePrettierSync.format("code"),
+        fakeSynchronizedPrettier.format("code"),
         await fakePrettier.format("code"),
       );
     });

@@ -8,7 +8,19 @@ const {
 const url = require("url");
 const path = require("path");
 
-const PRETTIER_ASYNC_FUNCTIONS = [
+/**
+@template {keyof PrettierSynchronizedFunctions} FunctionName
+@typedef {(...args: Parameters<Prettier[FunctionName]>) => Awaited<ReturnType<Prettier[FunctionName]>> } PrettierSyncFunction
+*/
+
+/**
+@typedef {import("prettier")} Prettier
+@typedef {{ [FunctionName in typeof PRETTIER_ASYNC_FUNCTIONS[number]]: PrettierSyncFunction<FunctionName> }} PrettierSynchronizedFunctions
+@typedef {{ [PropertyName in typeof PRETTIER_STATIC_PROPERTIES[number]]: Prettier[PropertyName] }} PrettierStaticProperties
+@typedef {PrettierSynchronizedFunctions & PrettierStaticProperties} SynchronizedPrettier
+*/
+
+const PRETTIER_ASYNC_FUNCTIONS = /** @type {const} */ ([
   "formatWithCursor",
   "format",
   "check",
@@ -17,10 +29,15 @@ const PRETTIER_ASYNC_FUNCTIONS = [
   "clearConfigCache",
   "getFileInfo",
   "getSupportInfo",
-];
+]);
 
-const PRETTIER_STATIC_PROPERTIES = ["version", "util", "doc"];
+const PRETTIER_STATIC_PROPERTIES = /** @type {const} */ ([
+  "version",
+  "util",
+  "doc",
+]);
 
+/** @type {Worker | undefined} */
 let worker;
 function createWorker() {
   if (!worker) {
@@ -31,7 +48,13 @@ function createWorker() {
   return worker;
 }
 
-function createSyncFunction(functionName, prettierEntry) {
+/**
+ * @template {keyof PrettierSynchronizedFunctions} FunctionName
+ * @param {FunctionName} functionName
+ * @param {string} prettierEntry
+ * @returns {PrettierSyncFunction<FunctionName>}
+ */
+function createSynchronizedFunction(functionName, prettierEntry) {
   return (...args) => {
     const signal = new Int32Array(new SharedArrayBuffer(4));
     const { port1: localPort, port2: workerPort } = new MessageChannel();
@@ -56,10 +79,19 @@ function createSyncFunction(functionName, prettierEntry) {
   };
 }
 
+/**
+ * @template {keyof PrettierStaticProperties} Property
+ * @param {Property} property
+ * @param {string} prettierEntry
+ */
 function getProperty(property, prettierEntry) {
-  return require(prettierEntry)[property];
+  return /** @type {Prettier} */ (require(prettierEntry))[property];
 }
 
+/**
+ * @template {keyof SynchronizedPrettier} ExportName
+ * @param {() => SynchronizedPrettier[ExportName]} getter
+ */
 function createDescriptor(getter) {
   let value;
   return {
@@ -71,6 +103,9 @@ function createDescriptor(getter) {
   };
 }
 
+/**
+ * @param {string | URL} entry
+ */
 function toImportId(entry) {
   if (entry instanceof URL) {
     return entry.href;
@@ -83,6 +118,9 @@ function toImportId(entry) {
   return entry;
 }
 
+/**
+ * @param {string | URL} entry
+ */
 function toRequireId(entry) {
   if (entry instanceof URL || entry.startsWith("file:")) {
     return url.fileURLToPath(entry);
@@ -91,6 +129,11 @@ function toRequireId(entry) {
   return entry;
 }
 
+/**
+ * @param {object} options
+ * @param {string | URL} options.prettierEntry - Path or URL to prettier entry.
+ * @returns {SynchronizedPrettier}
+ */
 function createSynchronizedPrettier({ prettierEntry }) {
   const importId = toImportId(prettierEntry);
   const requireId = toRequireId(prettierEntry);
@@ -99,15 +142,21 @@ function createSynchronizedPrettier({ prettierEntry }) {
     Object.create(null),
     Object.fromEntries(
       [
-        ...PRETTIER_ASYNC_FUNCTIONS.map((functionName) => [
-          functionName,
-          () => createSyncFunction(functionName, importId),
-        ]),
-        ...PRETTIER_STATIC_PROPERTIES.map((property) => [
-          property,
-          () => getProperty(property, requireId),
-        ]),
-      ].map(([property, getter]) => [property, createDescriptor(getter)]),
+        ...PRETTIER_ASYNC_FUNCTIONS.map((functionName) => {
+          return /** @type {const} */ ([
+            functionName,
+            () => createSynchronizedFunction(functionName, importId),
+          ]);
+        }),
+        ...PRETTIER_STATIC_PROPERTIES.map((property) => {
+          return /** @type {const} */ ([
+            property,
+            () => getProperty(property, requireId),
+          ]);
+        }),
+      ].map(([property, getter]) => {
+        return /** @type {const} */ ([property, createDescriptor(getter)]);
+      }),
     ),
   );
 
@@ -115,4 +164,5 @@ function createSynchronizedPrettier({ prettierEntry }) {
 }
 
 module.exports = createSynchronizedPrettier({ prettierEntry: "prettier" });
+// @ts-expect-error Property 'createSynchronizedPrettier' for named export compatibility
 module.exports.createSynchronizedPrettier = createSynchronizedPrettier;
