@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import prettier from "prettier";
 import synchronizedPrettier, { createSynchronizedPrettier } from "./index.cjs";
-import fakePrettier from './a-fake-prettier-to-test.cjs'
+import fakePrettier from "./a-fake-prettier-to-test.cjs";
 
 test("format", async () => {
   const code = await fs.readFile("./index.cjs", "utf8");
