@@ -19,6 +19,7 @@
   "main": "./index.cjs",
   "exports": {
     ".": {
+      "types": "./index.d.cts",
       "require": "./index.cjs",
       "default": "./index.cjs"
     },
@@ -26,6 +27,7 @@
   },
   "files": [
     "index.cjs",
+    "index.d.cts",
     "worker.js"
   ],
   "scripts": {
