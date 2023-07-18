@@ -4,6 +4,7 @@ const {
   Worker,
   receiveMessageOnPort,
   MessageChannel,
+  SHARE_ENV,
 } = require("worker_threads");
 const url = require("url");
 const path = require("path");
@@ -41,7 +42,7 @@ const PRETTIER_STATIC_PROPERTIES = /** @type {const} */ ([
 let worker;
 function createWorker() {
   if (!worker) {
-    worker = new Worker(require.resolve("./worker.js"));
+    worker = new Worker(require.resolve("./worker.js"), { env: SHARE_ENV });
     worker.unref();
   }
 

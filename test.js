@@ -27,6 +27,26 @@ test("version", () => {
   assert.equal(synchronizedPrettier.version, prettier.version);
 });
 
+test("share env", () => {
+  const code = "<script>foo(</script>";
+  const formatOptions = { parser: "html" };
+  assert.equal(
+    synchronizedPrettier.format(code, formatOptions),
+    "<script>\n  foo(\n</script>\n",
+  );
+
+  process.env.PRETTIER_DEBUG = "1";
+  let error;
+  try {
+    synchronizedPrettier.format(code, formatOptions);
+  } catch (formatError) {
+    error = formatError;
+  } finally {
+    delete process.env.PRETTIER_DEBUG;
+  }
+  assert.deepEqual(error.loc, { start: { line: 1, column: 5 } });
+});
+
 {
   const fakePrettierRelatedPath = "./a-fake-prettier-to-test.cjs";
   const fakePrettierUrl = new URL(fakePrettierRelatedPath, import.meta.url);
