@@ -56,5 +56,8 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "make-synchronized": "^0.0.3"
   }
 }

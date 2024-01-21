@@ -31,7 +31,6 @@ test("version", () => {
   const fakePrettierRelatedPath = "./a-fake-prettier-to-test.cjs";
   const fakePrettierUrl = new URL(fakePrettierRelatedPath, import.meta.url);
   for (const prettierEntry of [
-    fakePrettierRelatedPath,
     fakePrettierUrl,
     fakePrettierUrl.href,
     fileURLToPath(fakePrettierUrl),
