@@ -1,6 +1,6 @@
 "use strict";
 
-const {makeSynchronizedModule} = require('make-synchronized')
+const { makeSynchronizedModule } = require("make-synchronized");
 
 function createSynchronizedPrettier({ prettierEntry }) {
   return makeSynchronizedModule(prettierEntry);
