@@ -36,24 +36,19 @@ This package is a simple wrapper of [`make-synchronized`](https://github.com/fis
 For more complex use cases, it more reasonable to extract into a separate file, and run with [`make-synchronized`](https://github.com/fisker/make-synchronized), example
 
 ```js
-// runs-in-worker.js
 import * as fs from "node:fs/promises";
 import * as prettier from "prettier";
-
-export async function formatFile(file) {
-  const config = await prettier.resolveConfig(filepath);
-  const content = await fs.readFile(file, "utf8");
-  const formatted = await prettier.format(content, config);
-  await fs.writeFile(file, formatted);
-}
-```
-
-```js
 import makeSynchronized from "make-synchronized";
 
-const {
-  formatFile, // Synchronize version of `formatFile` in `runs-in-worker.js`
-} = makeSynchronized(new URL("./runs-in-worker.js", import.meta.url));
+export default makeSynchronized(import.meta, async function formatFile(file) {
+  const config = await prettier.resolveConfig(file);
+  const content = await fs.readFile(file, "utf8");
+  const formatted = await prettier.format(content, {
+    ...config,
+    filepath: file,
+  });
+  await fs.writeFile(file, formatted);
+});
 ```
 
 ### `createSynchronizedPrettier(options)`
