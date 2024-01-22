@@ -31,6 +31,26 @@ synchronizedPrettier.format("foo( )", { parser: "babel" });
 // => 'foo();\n'
 ```
 
+This package is a simple wrapper of [`make-synchronized`](https://github.com/fisker/make-synchronized), currently only the functions and primitive values exported from `prettier` is functional, functions not exported directly (eg: `prettier.__debug.parse`) doesn't work, but it can be supported, if you want more functionality, please [open an issue](https://github.com/prettier/prettier-synchronized/issues/new).
+
+For more complex use cases, it more reasonable to extract into a separate file, and run with [`make-synchronized`](https://github.com/fisker/make-synchronized), example
+
+```js
+import * as fs from "node:fs/promises";
+import * as prettier from "prettier";
+import makeSynchronized from "make-synchronized";
+
+export default makeSynchronized(import.meta, async function formatFile(file) {
+  const config = await prettier.resolveConfig(file);
+  const content = await fs.readFile(file, "utf8");
+  const formatted = await prettier.format(content, {
+    ...config,
+    filepath: file,
+  });
+  await fs.writeFile(file, formatted);
+});
+```
+
 ### `createSynchronizedPrettier(options)`
 
 #### `options`

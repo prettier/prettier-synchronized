@@ -4,7 +4,7 @@
     "checkJs": true,
     "noEmit": true,
     "target": "esnext",
-    "module": "NodeNext"
+    "module": "NodeNext",
   },
-  "files": ["index.cjs"]
+  "files": ["index.cjs"],
 }
