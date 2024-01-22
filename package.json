@@ -26,8 +26,7 @@
   },
   "files": [
     "index.cjs",
-    "index.d.cts",
-    "worker.js"
+    "index.d.cts"
   ],
   "scripts": {
     "dist": "np --yolo --no-yarn",
