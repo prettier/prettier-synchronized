@@ -37,13 +37,13 @@ test("functions not exported directly", async () => {
   const { ast: astParsedBySynchronizedPrettier } =
     synchronizedPrettier.__debug.parse(code, parseOptions);
 
-  assert.equal(ast.type, "Program");
+  assert.equal(astParsedBySynchronizedPrettier.type, "Program");
 
   const { ast: astParsedByPrettier } = await prettier.__debug.parse(
     code,
     parseOptions,
   );
-  assert.deepEqual(ast, astParsedByPrettier);
+  assert.deepEqual(astParsedBySynchronizedPrettier, astParsedByPrettier);
 });
 
 {
