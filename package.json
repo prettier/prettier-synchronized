@@ -57,6 +57,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "make-synchronized": "^0.2.1"
+    "make-synchronized": "^0.2.5"
   }
 }

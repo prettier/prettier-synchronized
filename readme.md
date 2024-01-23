@@ -31,7 +31,7 @@ synchronizedPrettier.format("foo( )", { parser: "babel" });
 // => 'foo();\n'
 ```
 
-This package is a simple wrapper of [`make-synchronized`](https://github.com/fisker/make-synchronized), currently only the functions and primitive values exported from `prettier` is functional, functions not exported directly (eg: `prettier.__debug.parse`) doesn't work, but it can be supported, if you want more functionality, please [open an issue](https://github.com/prettier/prettier-synchronized/issues/new).
+This package is a simple wrapper of [`make-synchronized`](https://github.com/fisker/make-synchronized).
 
 For more complex use cases, it more reasonable to extract into a separate file, and run with [`make-synchronized`](https://github.com/fisker/make-synchronized), example
 

@@ -6,13 +6,18 @@ import prettier from "prettier";
 import synchronizedPrettier, { createSynchronizedPrettier } from "./index.cjs";
 import fakePrettier from "./a-fake-prettier-to-test.cjs";
 
+const code = await fs.readFile("./index.cjs", "utf8");
+
 test("format", async () => {
-  const code = await fs.readFile("./index.cjs", "utf8");
   const formatOptions = { parser: "meriyah" };
-  assert.equal(
-    synchronizedPrettier.format(code, formatOptions),
-    await prettier.format(code, formatOptions),
+  const formattedBySynchronizedPrettier = synchronizedPrettier.format(
+    code,
+    formatOptions,
   );
+  assert.equal(typeof formattedBySynchronizedPrettier, "string");
+
+  const formattedByPrettier = await prettier.format(code, formatOptions);
+  assert.equal(formattedBySynchronizedPrettier, formattedByPrettier);
 
   let error;
   try {
@@ -25,6 +30,20 @@ test("format", async () => {
 
 test("version", () => {
   assert.equal(synchronizedPrettier.version, prettier.version);
+});
+
+test("functions not exported directly", async () => {
+  const parseOptions = { parser: "meriyah" };
+  const { ast: astParsedBySynchronizedPrettier } =
+    synchronizedPrettier.__debug.parse(code, parseOptions);
+
+  assert.equal(ast.type, "Program");
+
+  const { ast: astParsedByPrettier } = await prettier.__debug.parse(
+    code,
+    parseOptions,
+  );
+  assert.deepEqual(ast, astParsedByPrettier);
 });
 
 {
