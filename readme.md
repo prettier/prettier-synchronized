@@ -33,7 +33,9 @@ synchronizedPrettier.format("foo( )", { parser: "babel" });
 
 This package is a simple wrapper of [`make-synchronized`](https://github.com/fisker/make-synchronized).
 
-For more complex use cases, it more reasonable to extract into a separate file, and run with [`make-synchronized`](https://github.com/fisker/make-synchronized), example
+For more complex use cases, it more reasonable to extract functionality into a separate file, and run with [`make-synchronized`](https://github.com/fisker/make-synchronized), [`synckit`](https://github.com/un-ts/synckit), or [`make-synchronous`](https://github.com/sindresorhus/make-synchronous) etc.
+
+Example:
 
 ```js
 import * as fs from "node:fs/promises";
