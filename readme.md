@@ -33,7 +33,7 @@ synchronizedPrettier.format("foo( )", { parser: "babel" });
 
 This package is a simple wrapper of [`make-synchronized`](https://github.com/fisker/make-synchronized).
 
-For more complex use cases, it more reasonable to extract functionality into a separate file, and run with [`make-synchronized`](https://github.com/fisker/make-synchronized), [`synckit`](https://github.com/un-ts/synckit), or [`make-synchronous`](https://github.com/sindresorhus/make-synchronous) etc.
+For more complex use cases, it's better to use [`make-synchronized`](https://github.com/fisker/make-synchronized) directly:
 
 Example:
 
@@ -52,6 +52,8 @@ export default makeSynchronized(import.meta, async function formatFile(file) {
   await fs.writeFile(file, formatted);
 });
 ```
+
+Alternatively you can also use [`synckit`](https://github.com/un-ts/synckit) or [`make-synchronous`](https://github.com/sindresorhus/make-synchronous).
 
 ### `createSynchronizedPrettier(options)`
 
