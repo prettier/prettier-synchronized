@@ -7,7 +7,7 @@
 
 [github_actions_badge]: https://img.shields.io/github/actions/workflow/status/prettier/prettier-synchronized/continuous-integration.yml?style=flat-square
 [github_actions_link]: https://github.com/prettier/prettier-synchronized/actions?query=branch%3Amain
-[codecov_badge]: https://codecov.io/gh/prettier/prettier-synchronized/branch/main/graph/badge.svg?token=Cvu6qhcepg
+[codecov_badge]: https://img.shields.io/codecov/c/github/prettier/prettier-synchronized?style=flat-square
 [codecov_link]: https://codecov.io/gh/prettier/prettier-synchronized
 [license_badge]: https://img.shields.io/npm/l/@prettier/sync.svg?style=flat-square
 [license_link]: https://github.com/prettier/prettier-synchronized/blob/main/license
