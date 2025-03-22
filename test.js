@@ -57,7 +57,7 @@ test("functions not exported directly", async () => {
     fakePrettierUrl.href,
     fileURLToPath(fakePrettierUrl),
   ]) {
-    test(prettierEntry, async () => {
+    test(prettierEntry.toString(), async () => {
       const fakeSynchronizedPrettier = createSynchronizedPrettier({
         prettierEntry,
       });
