@@ -55,9 +55,9 @@ export async function formatFile(file) {
 // index.js
 import makeSynchronized from "make-synchronized";
 
-const utilities = makeSynchronized(new URL('./utilities.js', import.meta.url))
+const utilities = makeSynchronized(new URL("./utilities.js", import.meta.url));
 
-utilities.formatFile('/path/to/file.js')
+utilities.formatFile("/path/to/file.js");
 ```
 
 Example 2:
