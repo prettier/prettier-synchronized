@@ -8,6 +8,10 @@ import fakePrettier from "./a-fake-prettier-to-test.cjs";
 
 const code = await fs.readFile("./index.cjs", "utf8");
 
+if (process.env.TEST_RUNTIME === 'Bun') {
+  assert(typeof Bun !== 'undefined')
+}
+
 test("format", async () => {
   const formatOptions = { parser: "meriyah" };
   const formattedBySynchronizedPrettier = synchronizedPrettier.format(
