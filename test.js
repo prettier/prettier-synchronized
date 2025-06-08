@@ -36,7 +36,7 @@ test("version", () => {
     fakePrettierUrl.href,
     fileURLToPath(fakePrettierUrl),
   ]) {
-    test(prettierEntry.toString(), async () => {
+    test(String(prettierEntry), async () => {
       const fakeSynchronizedPrettier = createSynchronizedPrettier({
         prettierEntry,
       });
