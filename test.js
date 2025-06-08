@@ -61,15 +61,20 @@ test("functions not exported directly", async () => {
     fakePrettierUrl.href,
     fileURLToPath(fakePrettierUrl),
   ]) {
-    test(String(prettierEntry), async () => {
-      const fakeSynchronizedPrettier = createSynchronizedPrettier({
-        prettierEntry,
-      });
-      assert.equal(fakeSynchronizedPrettier.version, fakePrettier.version);
-      assert.equal(
-        fakeSynchronizedPrettier.format("code"),
-        await fakePrettier.format("code"),
-      );
-    });
+    test(
+      prettierEntry instanceof URL
+        ? `[URL]${prettierEntry.href}`
+        : prettierEntry,
+      async () => {
+        const fakeSynchronizedPrettier = createSynchronizedPrettier({
+          prettierEntry,
+        });
+        assert.equal(fakeSynchronizedPrettier.version, fakePrettier.version);
+        assert.equal(
+          fakeSynchronizedPrettier.format("code"),
+          await fakePrettier.format("code"),
+        );
+      },
+    );
   }
 }
