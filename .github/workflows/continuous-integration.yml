@@ -56,7 +56,7 @@ jobs:
 
       - name: Run Test (${{matrix.runtime[0]}})
         if: ${{matrix.runtime[0] == 'Bun'}}
-        run: bun test-coverage
+        run: bun c8 bun test ./test.js
 
       - uses: codecov/codecov-action@v5
         with:
