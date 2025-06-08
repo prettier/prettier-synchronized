@@ -2,9 +2,11 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
+    "esModuleInterop": true,
     "noEmit": true,
-    "target": "esnext",
-    "module": "NodeNext"
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "NodeNext"
   },
-  "files": ["index.cjs"]
+  "include": ["*.cjs", "*.js"]
 }

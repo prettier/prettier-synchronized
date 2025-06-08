@@ -19,8 +19,14 @@
   "main": "./index.cjs",
   "exports": {
     ".": {
-      "types": "./index.d.cts",
-      "default": "./index.cjs"
+      "import": {
+        "types": "./index.d.ts",
+        "default": "./index.cjs"
+      },
+      "require": {
+        "types": "./index.d.cts",
+        "default": "./index.cjs"
+      }
     },
     "./*": "./*"
   },
