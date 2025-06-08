@@ -52,7 +52,7 @@
     "prettier": "3.5.3",
     "release-it": "19.0.3"
   },
-  "packageManager": "yarn@4.7.0",
+  "packageManager": "yarn@4.9.2",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
