@@ -19,20 +19,18 @@
   "main": "./index.cjs",
   "exports": {
     ".": {
-      "import": {
-        "types": "./index.d.ts",
-        "default": "./index.cjs"
+      "types": {
+        "import": "./index.d.mts",
+        "default": "./index.d.cts"
       },
-      "require": {
-        "types": "./index.d.cts",
-        "default": "./index.cjs"
-      }
+      "default": "./index.cjs"
     },
     "./*": "./*"
   },
   "files": [
     "index.cjs",
-    "index.d.cts"
+    "index.d.cts",
+    "index.d.mts"
   ],
   "scripts": {
     "dist": "release-it",
