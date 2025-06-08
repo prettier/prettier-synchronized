@@ -17,31 +17,46 @@ jobs:
           - "ubuntu-latest"
           - "macos-latest"
           - "windows-latest"
-        node_version:
-          - "22"
-          - "20"
-          - "18"
+        runtime:
+          - ["Node.js", "24"]
+          - ["Node.js", "22"]
+          - ["Node.js", "20"]
+          - ["Node.js", "18"]
+          - ["Bun", "latest"]
         # exclude:
         #   - os: "macos-latest"
         #     node_version: "12"
-    name: Node.js ${{ matrix.node_version }} on ${{ matrix.os }}
+    name: ${{matrix.runtime[0]}} ${{ matrix.runtime[1] }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
+      TEST_RUNTIME: ${{matrix.runtime[0]}}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
+        if: ${{matrix.runtime[0] == 'Node.js'}}
         with:
-          node-version: ${{ matrix.node_version }}
+          node-version: ${{ matrix.runtime[1] }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        if: ${{matrix.runtime[0] == 'Bun'}}
+        with:
+          bun-version: ${{ matrix.runtime[1] }}
 
       - name: Install Dependencies
         run: yarn
 
-      - name: Run Test
+      - name: Run Test (${{matrix.runtime[0]}})
+        if: ${{matrix.runtime[0] == 'Node.js'}}
         run: yarn test-coverage
+
+      - name: Run Test (${{matrix.runtime[0]}})
+        if: ${{matrix.runtime[0] == 'Bun'}}
+        run: bun c8 bun test ./test.js
 
       - uses: codecov/codecov-action@v5
         with:
