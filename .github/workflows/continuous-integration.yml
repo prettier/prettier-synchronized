@@ -53,9 +53,9 @@ jobs:
         if: ${{matrix.runtime[0] == 'Node.js'}}
         run: yarn test-coverage
 
-      - name: Run Test
+      - name: Run Test (${{matrix.runtime[0]}})
         if: ${{matrix.runtime[0] == 'Bun'}}
-        run: c8 bun test
+        run: c8 bun test ./test.js
 
       - uses: codecov/codecov-action@v5
         with:
